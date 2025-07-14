@@ -43,4 +43,3 @@ def tiene_permiso(rol_usuario, modulo_solicitado):
         return True
         
     return False
-
