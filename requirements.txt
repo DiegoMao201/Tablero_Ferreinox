@@ -1,0 +1,36 @@
+# Framework principal
+streamlit
+
+# Manipulación y análisis de datos
+pandas
+numpy
+
+# Conexión con Google (Sheets & Drive)
+gspread
+google-api-python-client
+google-auth-oauthlib
+gspread-dataframe
+
+# Conexión con Dropbox
+dropbox
+
+# Visualización de datos
+plotly
+
+# Generación de Documentos
+fpdf2
+Pillow
+openpyxl
+reportlab
+
+# Correo y Comunicación
+yagmail
+
+# Componentes Especiales de Streamlit
+streamlit-drawable-canvas
+
+# Utilidades
+pytz # Para manejo de zonas horarias
+
+# Modelos Estadísticos y Predictivos
+statsmodels
