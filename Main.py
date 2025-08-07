@@ -117,7 +117,7 @@ with st.container(border=True):
         st.write(" ")
         st.link_button(
             "Administrar Cartera",
-            "https://tu-link-aqui.streamlit.app/cartera", # <-- ¡AQUÍ VA TU LINK!
+            "https://cartera-gestion-reporte-conclusion.streamlit.app/", # <-- ¡AQUÍ VA TU LINK!
             use_container_width=True
         )
 
