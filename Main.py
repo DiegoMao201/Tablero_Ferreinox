@@ -87,7 +87,7 @@ with st.container(border=True):
         st.write(" ")
         st.link_button(
             "Ver Dashboard de Ventas",
-            "https://tu-link-aqui.streamlit.app/ventas", # <-- ¡AQUÍ VA TU LINK!
+            "https://resumen-ventas-gerenciales-estadisticos.streamlit.app/", # <-- ¡AQUÍ VA TU LINK!
             use_container_width=True
         )
 
