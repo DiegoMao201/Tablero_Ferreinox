@@ -58,7 +58,7 @@ with st.container(border=True):
         st.write(" ")
         st.link_button(
             "Acceder a Inventario",
-            "https://tu-link-aqui.streamlit.app/inventario", # <-- ¡AQUÍ VA TU LINK!
+            "https://rotacion-iventarios-traslados-promociones.streamlit.app/", # <-- ¡AQUÍ VA TU LINK!
             use_container_width=True
         )
 
@@ -147,7 +147,7 @@ with st.container(border=True):
         st.write(" ")
         st.link_button(
             "Generar Cotización",
-            "https://tu-link-aqui.streamlit.app/cotizaciones", # <-- ¡AQUÍ VA TU LINK!
+            "https://cotizador-presupuesto-precios.streamlit.app/", # <-- ¡AQUÍ VA TU LINK!
             use_container_width=True
         )
 
@@ -176,7 +176,7 @@ with st.container(border=True):
         st.write(" ")
         st.link_button(
             "Gestionar Consentimientos",
-            "https://tu-link-aqui.streamlit.app/privacidad", # <-- ¡AQUÍ VA TU LINK!
+            "https://formulario-de-actualicion-de-datos-mas-alla-del-color.streamlit.app/", # <-- ¡AQUÍ VA TU LINK!
             use_container_width=True
         )
 
@@ -206,7 +206,7 @@ with st.container(border=True):
         st.write(" ")
         st.link_button(
             "Iniciar Conteo",
-            "https://tu-link-aqui.streamlit.app/conteo", # <-- ¡AQUÍ VA TU LINK!
+            "https://conteo-inventario-fisico-ajuste-organizacional.streamlit.app/", # <-- ¡AQUÍ VA TU LINK!
             use_container_width=True
         )
 
