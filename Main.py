@@ -214,4 +214,4 @@ with st.container(border=True):
 # --- PIE DE PÁGINA ---
 # ======================================================================================
 st.divider()
-st.caption("© 2025 [Nombre de tu Compañía]. Todos los derechos reservados. Para soporte técnico, contactar al equipo de TI.")
+st.caption("© 2025 FERREINOX SAS BIC. Todos los derechos reservados. Para soporte técnico, contactar al equipo de TI.")
