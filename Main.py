@@ -1,72 +1,217 @@
-# Dentro de main.py
+# portal_app.py
+# -*- coding: utf-8 -*-
+
+"""
+Script Principal para el Portal de Aplicaciones Empresariales.
+Este dashboard centraliza el acceso a todas las herramientas internas de la compañía,
+proporcionando una interfaz de usuario limpia, profesional y fácil de usar.
+Autor: [Tu Nombre]
+Versión: 1.0
+"""
 
 import streamlit as st
-from core.auth import verificar_login, tiene_permiso # Importamos desde nuestro nuevo gestor
-from core.data_manager import get_all_data # Importamos el gestor de datos
 
-# --- 1. Configuración Inicial de la Página ---
+# ======================================================================================
+# --- CONFIGURACIÓN DE LA PÁGINA ---
+# Esto debe ser el primer comando de Streamlit en tu script.
+# ======================================================================================
 st.set_page_config(
-    page_title="Plataforma Ferreinox",
-    page_icon="https://raw.githubusercontent.com/DiegoMao201/Resumen-Ventas-Gerenciales/main/LOGO%20FERREINOX%20SAS%20BIC%202024.png", # Puedes usar una URL para el ícono
-    layout="centered" # Usamos un layout centrado para el login
+    page_title="Suite Empresarial | Portal de Aplicaciones",
+    page_icon="🚀",
+    layout="wide",
+    initial_sidebar_state="collapsed",
 )
 
-# --- 2. Lógica de la Pantalla de Login ---
+# ======================================================================================
+# --- TÍTULO Y ENCABEZADO ---
+# ======================================================================================
+st.title("🚀 Suite de Herramientas Empresariales")
+st.markdown("""
+Bienvenido al centro de operaciones de nuestra compañía. Desde este portal puedes acceder de forma segura y rápida a todas nuestras aplicaciones internas.
+Cada herramienta ha sido diseñada para optimizar nuestros procesos y potenciar la toma de decisiones basada en datos.
+""")
+st.divider()
 
-# Verificamos si el usuario ya está autenticado en la sesión
-if not st.session_state.get('autenticado', False):
-    
-    st.image("https://raw.githubusercontent.com/DiegoMao201/Resumen-Ventas-Gerenciales/main/LOGO%20FERREINOX%20SAS%20BIC%202024.png", width=300)
-    st.title("Plataforma de Inteligencia de Negocios")
-    st.header("Inicio de Sesión")
+# ======================================================================================
+# --- TARJETA 1: CONTROL DE INVENTARIO ---
+# ======================================================================================
+with st.container(border=True):
+    col1, col2 = st.columns((2, 1)) # Divide el contenedor en 2/3 para texto y 1/3 para el botón
 
-    # Creamos el formulario de login
-    with st.form("login_form"):
-        username = st.text_input("Usuario")
-        password = st.text_input("Contraseña", type="password")
-        submitted = st.form_submit_button("Ingresar")
+    with col1:
+        st.header("📦 Control de Inventario")
+        st.markdown("""
+        **¿Qué es?**
+        Una plataforma centralizada para la gestión y monitoreo en tiempo real de todo nuestro stock. Visualiza niveles de inventario, movimientos y valoraciones.
 
-        if submitted:
-            # Llamamos a nuestra función de verificación del core/auth.py
-            # Esta función devolverá True si el login es exitoso
-            if verificar_login(username, password):
-                st.session_state['autenticado'] = True
-                # Forzamos a Streamlit a recargar la página.
-                # Al recargar, la condición de arriba será False y mostrará el contenido principal.
-                st.rerun()
-            else:
-                st.error("Usuario o contraseña incorrectos.")
+        **Información Clave:**
+        - **Niveles de Stock:** Cantidades exactas por SKU y por almacén.
+        - **Valoración:** Costo total del inventario actual.
+        - **Alertas:** Notificaciones automáticas de stock bajo o sobrestock.
 
-# --- 3. Lógica Principal de la Aplicación (Post-Login) ---
-else:
-    # --- ESTE CÓDIGO SOLO SE EJECUTA SI EL USUARIO ESTÁ AUTENTICADO ---
+        **¿Cómo aprovecharla?**
+        Optimiza las compras, evita quiebres de stock y planifica la distribución de productos de manera eficiente.
+        """)
 
-    # Cambiamos el layout a ancho para los dashboards
-    st.set_page_config(layout="wide") 
+    with col2:
+        st.write(" ") # Espacio para alinear verticalmente
+        st.write(" ")
+        st.link_button(
+            "Acceder a Inventario",
+            "https://tu-link-aqui.streamlit.app/inventario", # <-- ¡AQUÍ VA TU LINK!
+            use_container_width=True
+        )
 
-    # Saludamos al usuario. El nombre completo se guardó en la sesión durante el login.
-    st.sidebar.title(f"Bienvenido(a), {st.session_state.get('nombre_completo', '')}")
-    st.sidebar.markdown("---")
-    
-    # Mensaje de bienvenida en la página principal
-    st.header("Bienvenido a la Plataforma de Inteligencia de Negocios Ferreinox")
-    st.info("Utilice el menú de la izquierda para navegar entre los diferentes módulos.")
+# ======================================================================================
+# --- TARJETA 2: SEGUIMIENTO DE VENTAS ---
+# ======================================================================================
+with st.container(border=True):
+    col1, col2 = st.columns((2, 1))
 
-    # Con un botón, permitimos cerrar la sesión de forma segura
-    if st.sidebar.button("Cerrar Sesión"):
-        # Limpiamos todas las variables de la sesión para un logout completo
-        for key in list(st.session_state.keys()):
-            del st.session_state[key]
-        # Recargamos la página para volver a la pantalla de login
-        st.rerun()
-        
-    # --- Precarga de Datos (Opcional pero Recomendado) ---
-    # Podemos hacer que la primera vez que un usuario inicia sesión,
-    # se carguen todos los datos en segundo plano.
-    if 'data' not in st.session_state:
-        with st.spinner("Cargando datos maestros, por favor espere un momento..."):
-            # Llamamos a nuestra función maestra del data_manager
-            st.session_state['data'] = get_all_data()
-        st.toast("¡Datos cargados exitosamente!", icon="✅")
+    with col1:
+        st.header("📈 Seguimiento de Ventas")
+        st.markdown("""
+        **¿Qué es?**
+        Un dashboard interactivo que muestra el rendimiento de ventas a través de KPIs (Indicadores Clave de Rendimiento) y gráficos dinámicos.
 
+        **Información Clave:**
+        - **Ventas Totales:** Ingresos por día, semana, mes y año.
+        - **Rendimiento por Vendedor/Región:** Compara resultados y detecta oportunidades.
+        - **Productos Top:** Identifica los productos más vendidos.
 
+        **¿Cómo aprovecharla?**
+        Toma decisiones comerciales informadas, motiva al equipo de ventas con datos transparentes y ajusta estrategias en tiempo real.
+        """)
+    with col2:
+        st.write(" ")
+        st.write(" ")
+        st.link_button(
+            "Ver Dashboard de Ventas",
+            "https://tu-link-aqui.streamlit.app/ventas", # <-- ¡AQUÍ VA TU LINK!
+            use_container_width=True
+        )
+
+# ======================================================================================
+# --- TARJETA 3: GESTIÓN DE CARTERA ---
+# ======================================================================================
+with st.container(border=True):
+    col1, col2 = st.columns((2, 1))
+
+    with col1:
+        st.header("💰 Gestión de Cartera")
+        st.markdown("""
+        **¿Qué es?**
+        Herramienta para el seguimiento detallado de las cuentas por cobrar, gestionando la salud financiera y el flujo de caja de la empresa.
+
+        **Información Clave:**
+        - **Edades de Vencimiento:** Clasificación de la deuda por antigüedad (30, 60, 90+ días).
+        - **Estado de Cuentas:** Visualiza facturas pagadas, pendientes y vencidas por cliente.
+        - **Proyecciones de Cobro:** Estima los ingresos futuros basados en el historial de pagos.
+
+        **¿Cómo aprovecharla?**
+        Mejora el flujo de caja, reduce el riesgo de incobrabilidad y automatiza los recordatorios de pago a clientes.
+        """)
+
+    with col2:
+        st.write(" ")
+        st.write(" ")
+        st.link_button(
+            "Administrar Cartera",
+            "https://tu-link-aqui.streamlit.app/cartera", # <-- ¡AQUÍ VA TU LINK!
+            use_container_width=True
+        )
+
+# ======================================================================================
+# --- TARJETA 4: COTIZACIONES Y PEDIDOS ---
+# ======================================================================================
+with st.container(border=True):
+    col1, col2 = st.columns((2, 1))
+
+    with col1:
+        st.header("📝 Cotizaciones y Pedidos")
+        st.markdown("""
+        **¿Qué es?**
+        Una solución integral para crear, enviar y dar seguimiento a cotizaciones profesionales, y convertirlas fácilmente en pedidos de venta.
+
+        **Información Clave:**
+        - **Plantillas Personalizables:** Genera cotizaciones con la imagen de la marca en segundos.
+        - **Historial de Versiones:** Rastrea cambios y negociaciones con el cliente.
+        - **Tasa de Conversión:** Mide la efectividad de tus propuestas comerciales.
+
+        **¿Cómo aprovecharla?**
+        Agiliza el ciclo de venta, proyecta una imagen más profesional y centraliza la comunicación comercial.
+        """)
+
+    with col2:
+        st.write(" ")
+        st.write(" ")
+        st.link_button(
+            "Generar Cotización",
+            "https://tu-link-aqui.streamlit.app/cotizaciones", # <-- ¡AQUÍ VA TU LINK!
+            use_container_width=True
+        )
+
+# ======================================================================================
+# --- TARJETA 5: GESTIÓN DE PRIVACIDAD (Habeas Data) ---
+# ======================================================================================
+with st.container(border=True):
+    col1, col2 = st.columns((2, 1))
+
+    with col1:
+        st.header("🔐 Portal de Consentimiento de Datos")
+        st.markdown("""
+        **¿Qué es?**
+        Plataforma para gestionar el consentimiento informado de clientes y colaboradores, asegurando el cumplimiento de las normativas de protección de datos (Habeas Data).
+
+        **Información Clave:**
+        - **Registro Centralizado:** Base de datos de todos los consentimientos otorgados.
+        - **Gestión de Peticiones:** Atiende solicitudes de actualización o eliminación de datos.
+        - **Trazabilidad:** Audita quién, cuándo y cómo se accedió a la información personal.
+
+        **¿Cómo aprovecharla?**
+        Garantiza el cumplimiento legal, genera confianza en tus clientes y protege a la empresa de riesgos y sanciones.
+        """)
+    with col2:
+        st.write(" ")
+        st.write(" ")
+        st.link_button(
+            "Gestionar Consentimientos",
+            "https://tu-link-aqui.streamlit.app/privacidad", # <-- ¡AQUÍ VA TU LINK!
+            use_container_width=True
+        )
+
+# ======================================================================================
+# --- TARJETA 6: ASISTENTE DE CONTEO FÍSICO ---
+# ======================================================================================
+with st.container(border=True):
+    col1, col2 = st.columns((2, 1))
+
+    with col1:
+        st.header("🧮 Asistente de Conteo Físico")
+        st.markdown("""
+        **¿Qué es?**
+        Una aplicación móvil y de escritorio diseñada para facilitar y digitalizar el proceso de conteo físico de inventario en bodega.
+
+        **Información Clave:**
+        - **Carga de Datos:** Importa la lista de productos a contar desde el sistema principal.
+        - **Registro en Vivo:** Ingresa las cantidades contadas directamente en la app.
+        - **Reporte de Discrepancias:** Compara automáticamente el conteo físico con el stock del sistema y resalta diferencias.
+
+        **¿Cómo aprovecharla?**
+        Reduce drásticamente el tiempo de auditoría de inventario, minimiza errores humanos y obtén un reporte de ajuste de forma inmediata.
+        """)
+
+    with col2:
+        st.write(" ")
+        st.write(" ")
+        st.link_button(
+            "Iniciar Conteo",
+            "https://tu-link-aqui.streamlit.app/conteo", # <-- ¡AQUÍ VA TU LINK!
+            use_container_width=True
+        )
+
+# ======================================================================================
+# --- PIE DE PÁGINA ---
+# ======================================================================================
+st.divider()
+st.caption("© 2025 [Nombre de tu Compañía]. Todos los derechos reservados. Para soporte técnico, contactar al equipo de TI.")
