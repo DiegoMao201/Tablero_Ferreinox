@@ -5,8 +5,9 @@
 Script Principal para el Portal de Aplicaciones Empresariales.
 Este dashboard centraliza el acceso a todas las herramientas internas de la compañía,
 proporcionando una interfaz de usuario limpia, profesional y fácil de usar.
+
 Autor: [Tu Nombre]
-Versión: 3.0 | Edición PRO con Alineación Perfecta y Elementos Visuales
+Versión: 3.1 | Edición PRO con Audio Explicativo Integrado
 """
 
 import streamlit as st
@@ -25,8 +26,19 @@ st.set_page_config(
 )
 
 # ======================================================================================
+# --- URLs DE LOS AUDIOS EXPLICATIVOS (FORMATO RAW) ---
+# ======================================================================================
+# Nota: Las URLs de GitHub se han convertido a su formato "raw" para acceso directo.
+AUDIO_INVENTARIO = "https://raw.githubusercontent.com/DiegoMao201/Tablero_Ferreinox/1405301b1a2eb6702e877b3523b8d0f7ba08cfd6/explicacion_tablero_abastecimiento_final.mp3"
+AUDIO_VENTAS = "https://raw.githubusercontent.com/DiegoMao201/Tablero_Ferreinox/1405301b1a2eb6702e877b3523b8d0f7ba08cfd6/explicacion_tablero_ventas.mp3"
+AUDIO_CARTERA = "https://raw.githubusercontent.com/DiegoMao201/Tablero_Ferreinox/1405301b1a2eb6702e877b3523b8d0f7ba08cfd6/explicacion_gestion_cartera.mp3"
+AUDIO_COTIZADOR = "https://raw.githubusercontent.com/DiegoMao201/Tablero_Ferreinox/1405301b1a2eb6702e877b3523b8d0f7ba08cfd6/explicacion_cotizador_ferreinox.mp3"
+AUDIO_DATOS = "https://raw.githubusercontent.com/DiegoMao201/Tablero_Ferreinox/1405301b1a2eb6702e877b3523b8d0f7ba08cfd6/explicacion_autorizacion_de_datos.mp3"
+AUDIO_CONTEO = "https://raw.githubusercontent.com/DiegoMao201/Tablero_Ferreinox/1405301b1a2eb6702e877b3523b8d0f7ba08cfd6/explicacion_inventarios_conteo.mp3"
+
+
+# ======================================================================================
 # --- FUNCIÓN PARA CARGAR IMÁGENES COMO BASE64 ---
-# Esto hace que la app sea más portable, ya que las imágenes se incrustan en el HTML.
 # ======================================================================================
 def img_to_base64(img_path):
     """Convierte una imagen a base64 para incrustarla en CSS/HTML."""
@@ -36,10 +48,8 @@ def img_to_base64(img_path):
 # ======================================================================================
 # --- ESTILOS CSS PERSONALIZADOS AVANZADOS ---
 # ======================================================================================
-# --- NOTA: Crea una carpeta 'img' y coloca dentro las imágenes de apoyo ---
-# Por ejemplo: 'img/inventory.png', 'img/sales.png', etc.
 try:
-    # Carga las imágenes de fondo para las tarjetas
+    # Carga las imágenes de apoyo para las tarjetas
     INVENTORY_IMG = img_to_base64("img/inventory.png")
     SALES_IMG = img_to_base64("img/sales.png")
     PORTFOLIO_IMG = img_to_base64("img/portfolio.png")
@@ -61,7 +71,7 @@ try:
             box-shadow: 0 4px 12px 0 rgba(0,0,0,0.08);
             transition: all 0.3s ease-in-out;
             background-color: #FFFFFF;
-            padding: 2rem; /* Aumentamos el padding para más aire */
+            padding: 2rem;
             display: flex;
             align-items: center;
         }}
@@ -75,12 +85,12 @@ try:
         .cta-column {{
             display: flex;
             flex-direction: column;
-            justify-content: center; /* Centrado vertical */
-            align-items: center; /* Centrado horizontal */
+            justify-content: center;
+            align-items: center;
             height: 100%;
         }}
 
-        /* --- Estilo de los botones --- */
+        /* --- Estilo del botón principal (link) --- */
         .stLinkButton a {{
             border-radius: 50px !important;
             font-weight: bold !important;
@@ -103,7 +113,7 @@ try:
         .support-image {{
             margin-top: 2rem;
             width: 80%;
-            max-width: 200px; /* Tamaño máximo para la imagen */
+            max-width: 200px;
             opacity: 0.8;
             transition: opacity 0.3s ease-in-out;
         }}
@@ -119,6 +129,46 @@ try:
         h2 {{
             color: #0056b3;
         }}
+
+        /* --- NUEVOS ESTILOS PARA EL BOTÓN DE AUDIO --- */
+        .audio-section {{
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #f0f0f0; /* Separador sutil */
+        }}
+        
+        .audio-title {{
+            font-weight: bold;
+            color: #002B49;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }}
+
+        /* Estilo para el botón de audio normal */
+        .audio-section .stButton > button {{
+            border-radius: 50px !important;
+            font-weight: bold !important;
+            color: #0056b3 !important; /* Texto azul */
+            background-color: #E6F2FF !important; /* Fondo azul claro */
+            transition: all 0.3s ease-in-out !important;
+            border: 1px solid #B3D7FF !important; /* Borde azul más claro */
+            box-shadow: none !important;
+            padding: 8px 18px !important;
+        }}
+
+        /* Efecto hover para el botón de audio */
+        .audio-section .stButton > button:hover {{
+            transform: scale(1.05) !important;
+            background-color: #0056b3 !important;
+            color: #FFFFFF !important;
+            box-shadow: 0 4px 12px rgba(0, 86, 179, 0.3) !important;
+            border: 1px solid #0056b3 !important;
+        }}
+
+        /* --- Contenedor para el reproductor de audio --- */
+        .stAudio {{
+            margin-top: 15px;
+        }}
     </style>
     """, unsafe_allow_html=True)
 except FileNotFoundError:
@@ -131,7 +181,6 @@ col1, col2, col3 = st.columns([2,3,2])
 with col2:
     try:
         logo = Image.open("LOGO FERREINOX SAS BIC 2024.png")
-        # CORRECCIÓN: Se usa use_container_width en lugar del obsoleto use_column_width
         st.image(logo, use_container_width=True)
     except FileNotFoundError:
         st.title("🚀 Suite Empresarial FERREINOX")
@@ -141,10 +190,10 @@ st.markdown("<p style='text-align: center; font-size: 1.1em; color: #333;'>Bienv
 st.divider()
 
 # ======================================================================================
-# --- FUNCIÓN PARA CREAR TARJETAS (PARA NO REPETIR CÓDIGO) ---
+# --- FUNCIÓN PARA CREAR TARJETAS (MODIFICADA PARA AÑADIR AUDIO) ---
 # ======================================================================================
-def create_card(icon, title, description_md, button_text, button_url, image_base64):
-    """Crea una tarjeta de aplicación con un layout mejorado."""
+def create_card(icon, title, description_md, button_text, button_url, image_base64, audio_url):
+    """Crea una tarjeta de aplicación con un layout mejorado y un botón de audio."""
     with st.container():
         st.markdown('<div class="card">', unsafe_allow_html=True)
         col1, col2 = st.columns((2, 1))
@@ -152,6 +201,13 @@ def create_card(icon, title, description_md, button_text, button_url, image_base
         with col1:
             st.header(f"{icon} {title}")
             st.markdown(description_md)
+
+            # --- NUEVA SECCIÓN DE AUDIO ---
+            st.markdown('<div class="audio-section">', unsafe_allow_html=True)
+            st.markdown('<p class="audio-title">Audio Explicativo</p>', unsafe_allow_html=True)
+            if st.button("🎧 Pulsa y Escucha", key=f"audio_btn_{title}"):
+                st.audio(audio_url, format="audio/mp3")
+            st.markdown('</div>', unsafe_allow_html=True)
 
         with col2:
             st.markdown('<div class="cta-column">', unsafe_allow_html=True)
@@ -174,7 +230,7 @@ desc1 = """
 <br>
 **¿Cómo aprovecharla?** Optimiza las compras, evita quiebres de stock y planifica la distribución.
 """
-create_card("📦", "Control de Inventario", desc1, "Acceder a Inventario", "https://rotacion-iventarios-traslados-promociones.streamlit.app/", INVENTORY_IMG)
+create_card("📦", "Control de Inventario", desc1, "Acceder a Inventario", "https://rotacion-iventarios-traslados-promociones.streamlit.app/", INVENTORY_IMG, AUDIO_INVENTARIO)
 
 # TARJETA 2
 desc2 = """
@@ -185,7 +241,7 @@ desc2 = """
 <br>
 **¿Cómo aprovecharla?** Toma decisiones comerciales informadas y ajusta estrategias en tiempo real.
 """
-create_card("📈", "Seguimiento de Ventas", desc2, "Ver Dashboard", "https://resumen-ventas-gerenciales-estadisticos.streamlit.app/", SALES_IMG)
+create_card("📈", "Seguimiento de Ventas", desc2, "Ver Dashboard", "https://resumen-ventas-gerenciales-estadisticos.streamlit.app/", SALES_IMG, AUDIO_VENTAS)
 
 # TARJETA 3
 desc3 = """
@@ -196,7 +252,7 @@ desc3 = """
 <br>
 **¿Cómo aprovecharla?** Mejora el flujo de caja, reduce riesgos y automatiza recordatorios.
 """
-create_card("💰", "Gestión de Cartera", desc3, "Administrar Cartera", "https://cartera-gestion-reporte-conclusion.streamlit.app/", PORTFOLIO_IMG)
+create_card("💰", "Gestión de Cartera", desc3, "Administrar Cartera", "https://cartera-gestion-reporte-conclusion.streamlit.app/", PORTFOLIO_IMG, AUDIO_CARTERA)
 
 # TARJETA 4
 desc4 = """
@@ -207,7 +263,7 @@ desc4 = """
 <br>
 **¿Cómo aprovecharla?** Agiliza el ciclo de venta y proyecta una imagen más profesional.
 """
-create_card("📝", "Cotizaciones y Pedidos", desc4, "Generar Cotización", "https://cotizador-presupuesto-precios.streamlit.app/", QUOTES_IMG)
+create_card("📝", "Cotizaciones y Pedidos", desc4, "Generar Cotización", "https://cotizador-presupuesto-precios.streamlit.app/", QUOTES_IMG, AUDIO_COTIZADOR)
 
 # TARJETA 5
 desc5 = """
@@ -218,7 +274,7 @@ desc5 = """
 <br>
 **¿Cómo aprovecharla?** Garantiza el cumplimiento legal (Habeas Data) y genera confianza.
 """
-create_card("🔐", "Portal de Consentimiento", desc5, "Gestionar Datos", "https://formulario-de-actualicion-de-datos-mas-alla-del-color.streamlit.app/", PRIVACY_IMG)
+create_card("🔐", "Portal de Consentimiento", desc5, "Gestionar Datos", "https://formulario-de-actualicion-de-datos-mas-alla-del-color.streamlit.app/", PRIVACY_IMG, AUDIO_DATOS)
 
 # TARJETA 6
 desc6 = """
@@ -229,8 +285,7 @@ desc6 = """
 <br>
 **¿Cómo aprovecharla?** Reduce tiempo de auditoría, minimiza errores y obtén reportes al instante.
 """
-create_card("🧮", "Asistente de Conteo Físico", desc6, "Iniciar Conteo", "https://conteo-inventario-fisico-ajuste-organizacional.streamlit.app/", COUNT_IMG)
-
+create_card("🧮", "Asistente de Conteo Físico", desc6, "Iniciar Conteo", "https://conteo-inventario-fisico-ajuste-organizacional.streamlit.app/", COUNT_IMG, AUDIO_CONTEO)
 
 # ======================================================================================
 # --- PIE DE PÁGINA ---
