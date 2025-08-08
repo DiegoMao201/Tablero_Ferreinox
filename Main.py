@@ -7,7 +7,7 @@ Este dashboard centraliza el acceso a todas las herramientas internas de la comp
 proporcionando una interfaz de usuario limpia, profesional y fácil de usar.
 
 Autor: [Tu Nombre]
-Versión: 3.1 | Edición PRO con Audio Explicativo Integrado
+Versión: 3.2 | Edición PRO con Audio Reubicado para Mayor Relevancia
 """
 
 import streamlit as st
@@ -130,22 +130,16 @@ try:
             color: #0056b3;
         }}
 
-        /* --- NUEVOS ESTILOS PARA EL BOTÓN DE AUDIO --- */
-        .audio-section {{
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px solid #f0f0f0; /* Separador sutil */
-        }}
+        /* --- INICIO DE CAMBIOS: NUEVOS ESTILOS PARA AUDIO --- */
         
-        .audio-title {{
-            font-weight: bold;
-            color: #002B49;
-            margin-bottom: 10px;
-            font-size: 1.1em;
+        /* Contenedor del botón de audio en la cabecera de la tarjeta */
+        .header-audio-container {{
+            text-align: right;
+            margin-top: -15px; /* Ajuste para alinear verticalmente con el título */
         }}
 
         /* Estilo para el botón de audio normal */
-        .audio-section .stButton > button {{
+        .header-audio-container .stButton > button {{
             border-radius: 50px !important;
             font-weight: bold !important;
             color: #0056b3 !important; /* Texto azul */
@@ -157,7 +151,7 @@ try:
         }}
 
         /* Efecto hover para el botón de audio */
-        .audio-section .stButton > button:hover {{
+        .header-audio-container .stButton > button:hover {{
             transform: scale(1.05) !important;
             background-color: #0056b3 !important;
             color: #FFFFFF !important;
@@ -165,9 +159,14 @@ try:
             border: 1px solid #0056b3 !important;
         }}
 
+        /* --- FIN DE CAMBIOS --- */
+
         /* --- Contenedor para el reproductor de audio --- */
         .stAudio {{
             margin-top: 15px;
+            background-color: #FAFAFA;
+            border-radius: 10px;
+            padding: 5px;
         }}
     </style>
     """, unsafe_allow_html=True)
@@ -190,24 +189,42 @@ st.markdown("<p style='text-align: center; font-size: 1.1em; color: #333;'>Bienv
 st.divider()
 
 # ======================================================================================
-# --- FUNCIÓN PARA CREAR TARJETAS (MODIFICADA PARA AÑADIR AUDIO) ---
+# --- FUNCIÓN PARA CREAR TARJETAS (MODIFICADA PARA REUBICAR AUDIO) ---
 # ======================================================================================
 def create_card(icon, title, description_md, button_text, button_url, image_base64, audio_url):
-    """Crea una tarjeta de aplicación con un layout mejorado y un botón de audio."""
+    """
+    Crea una tarjeta de aplicación con un layout mejorado.
+    El botón de audio se reubica en la cabecera para mayor visibilidad.
+    """
+    # Usamos st.session_state para controlar la visibilidad del reproductor de audio
+    audio_state_key = f"play_audio_{title.replace(' ', '_')}"
+    if audio_state_key not in st.session_state:
+        st.session_state[audio_state_key] = False
+
     with st.container():
         st.markdown('<div class="card">', unsafe_allow_html=True)
         col1, col2 = st.columns((2, 1))
 
         with col1:
-            st.header(f"{icon} {title}")
+            # --- INICIO DE CAMBIOS: CABECERA CON TÍTULO Y BOTÓN DE AUDIO ---
+            title_col, audio_col = st.columns([3, 1])
+
+            with title_col:
+                st.header(f"{icon} {title}")
+            
+            with audio_col:
+                st.markdown('<div class="header-audio-container">', unsafe_allow_html=True)
+                # Este botón cambia el estado para mostrar/ocultar el audio
+                if st.button("🎧 Audio Explicativo", key=f"audio_btn_{title}"):
+                    st.session_state[audio_state_key] = not st.session_state[audio_state_key]
+                st.markdown('</div>', unsafe_allow_html=True)
+            
             st.markdown(description_md)
 
-            # --- NUEVA SECCIÓN DE AUDIO ---
-            st.markdown('<div class="audio-section">', unsafe_allow_html=True)
-            st.markdown('<p class="audio-title">Audio Explicativo</p>', unsafe_allow_html=True)
-            if st.button("🎧 Pulsa y Escucha", key=f"audio_btn_{title}"):
+            # El reproductor de audio solo aparece si el estado es True
+            if st.session_state[audio_state_key]:
                 st.audio(audio_url, format="audio/mp3")
-            st.markdown('</div>', unsafe_allow_html=True)
+            # --- FIN DE CAMBIOS ---
 
         with col2:
             st.markdown('<div class="cta-column">', unsafe_allow_html=True)
