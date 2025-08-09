@@ -7,11 +7,11 @@ Este dashboard centraliza el acceso a todas las herramientas internas de la comp
 proporcionando una interfaz de usuario limpia, profesional y fácil de usar.
 
 Autor: [Tu Nombre]
-Versión: 3.2 | Edición PRO con Audio Reubicado para Mayor Relevancia
+Versión: 3.3 | Edición PRO con Estilos de Audio Mejorados
 """
 
 import streamlit as st
-from PIL import Image
+from PIL Image
 import base64
 from pathlib import Path
 
@@ -132,46 +132,45 @@ try:
 
         /* --- INICIO DE CAMBIOS: NUEVOS ESTILOS PARA AUDIO --- */
         
-        /* Wrapper para el texto "Pulsa y Escucha" */
+        /* Wrapper para el texto "Pulsa y Escucha" con alineación mejorada */
         .audio-prompt-wrapper {{
             display: flex;
             align-items: center;
-            justify-content: flex-end; /* Alinea el texto a la derecha */
-            height: 100%;
-            margin-top: -15px; /* Mismo ajuste vertical que el botón */
-            padding-right: 10px; /* Espacio entre el texto y el botón */
+            justify-content: flex-end;
+            height: 50px; /* Altura fija para ayudar a alinear */
+            margin-top: -15px; /* Ajuste para bajar el texto */
         }}
         .audio-prompt-wrapper span {{
             color: #002B49; /* Letra azul oscuro */
             font-weight: bold;
-            font-size: 0.95em;
+            font-size: 1em;
+            padding-right: 15px;
         }}
         
         /* Contenedor del botón de audio en la cabecera de la tarjeta */
         .header-audio-container {{
-            /* text-align: right; ya no es necesario, se controla con columnas */
-            margin-top: -15px; /* Ajuste para alinear verticalmente con el título */
+            margin-top: -15px; /* Ajuste para alinear el botón */
         }}
 
-        /* Estilo para el botón de audio normal con sombra */
+        /* Estilo para el botón de audio normal con sombra más prominente */
         .header-audio-container .stButton > button {{
             border-radius: 50px !important;
             font-weight: bold !important;
-            color: #0056b3 !important; /* Texto azul */
-            background-color: #E6F2FF !important; /* Fondo azul claro */
+            color: #0056b3 !important;
+            background-image: linear-gradient(45deg, #E6F2FF 0%, #CDE5FF 100%) !important; /* Gradiente sutil */
             transition: all 0.3s ease-in-out !important;
-            border: 1px solid #B3D7FF !important; /* Borde azul más claro */
-            padding: 8px 18px !important;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12) !important; /* Sombreado base para resaltar */
+            border: 1px solid #B3D7FF !important;
+            padding: 10px 20px !important; /* Un poco más grande */
+            box-shadow: 0 5px 15px rgba(0, 86, 179, 0.2), 0 2px 5px rgba(0, 0, 0, 0.08) !important; /* Sombra más fuerte y profesional */
         }}
 
-        /* Efecto hover para el botón de audio con sombra más oscura */
+        /* Efecto hover para el botón de audio más prominente */
         .header-audio-container .stButton > button:hover {{
-            transform: scale(1.05) !important;
-            background-color: #0056b3 !important;
+            transform: scale(1.08) translateY(-2px) !important; /* Efecto más notorio */
+            background-image: linear-gradient(45deg, #0056b3 0%, #007bff 100%) !important; /* Gradiente más vivo */
             color: #FFFFFF !important;
-            box-shadow: 0 6px 18px rgba(0, 86, 179, 0.45) !important; /* Sombra más oscura y pronunciada */
-            border: 1px solid #0056b3 !important;
+            box-shadow: 0 8px 20px rgba(0, 86, 179, 0.4), 0 4px 8px rgba(0, 0, 0, 0.15) !important; /* Sombra hover más oscura */
+            border: 1px solid #004a99 !important;
         }}
 
         /* --- FIN DE CAMBIOS --- */
@@ -218,18 +217,18 @@ def create_card(icon, title, description_md, button_text, button_url, image_base
 
     with st.container():
         st.markdown('<div class="card">', unsafe_allow_html=True)
-        col1, col2 = st.columns((2, 1))
+        col1, col2 = st.columns((2.2, 1)) # Se da un poco más de espacio a la columna de descripción
 
         with col1:
             # --- INICIO DE CAMBIOS: CABECERA CON TÍTULO, TEXTO Y BOTÓN DE AUDIO ---
-            title_col, interactive_col = st.columns([3, 2]) # Se da más espacio a la parte interactiva
+            title_col, interactive_col = st.columns([6, 5]) # Distribución más balanceada
 
             with title_col:
                 st.header(f"{icon} {title}")
             
             with interactive_col:
-                # Se anidan columnas para alinear el texto y el botón
-                prompt_col, btn_col = st.columns([1.2, 1.8]) # Ratio ajustado para el texto
+                # Se anidan columnas para alinear el texto y el botón de forma profesional
+                prompt_col, btn_col = st.columns([1, 1])
                 
                 with prompt_col:
                     st.markdown(
