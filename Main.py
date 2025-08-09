@@ -11,7 +11,7 @@ Versión: 3.3 | Edición PRO con Estilos de Audio Mejorados
 """
 
 import streamlit as st
-from PIL Image
+from PIL import Image
 import base64
 from pathlib import Path
 
